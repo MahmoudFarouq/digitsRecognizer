@@ -1,0 +1,156 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> وَقُل رَّبِّ زِدْنِي عِلْمًا </title>
+    </head>
+    <body>
+        
+
+        <div>
+            <div id="canvasDiv">
+                
+            </div>
+            <div id="buttons">
+                <input type="button" value="Clear" onclick="myClear()" ><br>
+                <!--<form method="POST" enctype=multipart/form-data>-->
+                    <input type='submit' value="Predict" onclick="sendBase64ToServer()">
+                    <input type='text'   name='image' id='result'> 
+                <!--</form>-->
+            </div>
+            
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.min.js"></script>
+        <script>
+            var cvs;
+            var circleRadius = 50;
+            function setup()
+            {
+                cvs = createCanvas(500, 400);
+                cvs.parent('#canvasDiv');
+                background(0);
+                fill(255);
+                noStroke();
+                noLoop();
+            }
+
+            function mouseDragged() {
+                ellipse(mouseX, mouseY, circleRadius);
+                //document.getElementById('imgElem').value = cvs.canvas.toDataURL('image/jpeg', 0.1);
+            }
+            
+            function myClear(){cvs.background(0);}
+            function submit(){saveCanvas(cvs, 'myCanvas', 'jpg');}
+
+
+            function draw(){}
+
+            var sendBase64ToServer = function(){
+                var base64 = cvs.canvas.toDataURL('image/jpeg', 0.1);
+                var xhr = new XMLHttpRequest();
+                var url = "http://localhost:5000/predict";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function () {
+                      document.getElementById('result').value =  this.responseText;
+                };
+                var data = JSON.stringify({image: base64});
+                xhr.send(data);
+            };
+
+
+        </script>
+        <style>
+            body{
+                background-color: cornflowerblue;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            div{
+                margin: auto;
+                border: 3px solid white;
+                border-radius: 15px;
+                padding: 10px;
+            }
+            input{
+                padding: auto;
+                margin: auto;
+                position: relative;
+            }
+        </style>
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+    <html>
+    <head>
+        <title>Digits Predictor</title>
+    </head>
+    <body>
+        <div>
+            <form method="POST" enctype=multipart/form-data>
+                <img src="#" alt="your image" id="img" /> <br>
+                <input type="text" name="imagePath"  id="imagePath" style="visibility: hidden;" >
+                <input type="file" name="imageInput" id="imageInput" > <br>
+                <input type="submit" value="Predict">
+            </form>
+        </div>
+        <div id="result" style="display: none">
+            <p>Hiiiiii</p>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script>
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                
+                    reader.onload = function(e) {
+                        $('#img').attr('src', e.target.result);
+                        $('#imagePath').attr('value', e.target.result);
+                    }
+                
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+                
+            $("#imageInput").change(function() {
+                readURL(this);
+            });
+        </script>
+    </body>
+</html>
+-->
