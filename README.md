@@ -4,7 +4,7 @@ this app works by allowing the users to draw a digit from 0 to 9 and it predicts
 
 ## dependencies
 ```shell
-sudo pip3 -H install numpy sklearn matplotlib flask mnist-python
+sudo pip3 -H install numpy sklearn matplotlib pillow flask mnist-python
 ```
 
 ## run
